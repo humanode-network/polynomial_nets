@@ -381,8 +381,8 @@ def residual_unit_v3(data, num_filter, stride, dim_match, name, bottle_neck, **k
         conv1 = Conv(data=bn1, num_filter=num_filter, kernel=(3,3), stride=(1,1), pad=(1,1),
                                       no_bias=True, workspace=workspace, name=name + '_conv1')
         bn2 = mx.sym.BatchNorm(data=conv1, fix_gamma=False, eps=2e-5, momentum=bn_mom, name=name + '_bn2')
-        act1 = Act(data=bn2, act_type=act_type, name=name + '_relu1')
-        conv2 = Conv(data=act1, num_filter=num_filter, kernel=(3,3), stride=stride, pad=(1,1),
+        # act1 = Act(data=bn2, act_type=act_type, name=name + '_relu1')
+        conv2 = Conv(data=bn2, num_filter=num_filter, kernel=(3,3), stride=stride, pad=(1,1),
                                       no_bias=True, workspace=workspace, name=name + '_conv2')
         bn3 = mx.sym.BatchNorm(data=conv2, fix_gamma=False, eps=2e-5, momentum=bn_mom, name=name + '_bn3')
         if use_se:
@@ -406,8 +406,8 @@ def residual_unit_v3(data, num_filter, stride, dim_match, name, bottle_neck, **k
         if memonger:
             shortcut._set_attr(mirror_stage='True')
         
-        act2 = Act(data=bn3*shortcut, act_type='tanh', name=name + '_tanh1')
-        conv3 = Conv(data=act2, num_filter=num_filter, kernel=(1, 1), stride=(1,1), pad=(0, 0),
+        # act2 = Act(data=bn3*shortcut, act_type='tanh', name=name + '_tanh1')
+        conv3 = Conv(data=bn3, num_filter=num_filter, kernel=(1, 1), stride=(1,1), pad=(0, 0),
                      no_bias=True, workspace=workspace, name=name + '_conv3')
         bn4 = mx.sym.BatchNorm(data=conv3, fix_gamma=False, eps=2e-5, momentum=bn_mom, name=name + '_bn4')
 
@@ -557,7 +557,7 @@ def resnet(units, num_stages, filter_list, num_classes, bottle_neck):
       body = Conv(data=body, num_filter=filter_list[0], kernel=(3,3), stride=(1,1), pad=(1, 1),
                                 no_bias=True, name="conv0", workspace=workspace)
       body = mx.sym.BatchNorm(data=body, fix_gamma=False, eps=2e-5, momentum=bn_mom, name='bn0')
-      body = Act(data=body, act_type=act_type, name='relu0')
+      # body = Act(data=body, act_type=act_type, name='relu0')
 
     for i in range(num_stages):
       #if version_input==0:
@@ -576,7 +576,7 @@ def resnet(units, num_stages, filter_list, num_classes, bottle_neck):
       body = Conv(data=body, num_filter=512, kernel=(1,1), stride=(1,1), pad=(0,0),
                                 no_bias=True, name="convd", workspace=workspace)
       body = mx.sym.BatchNorm(data=body, fix_gamma=False, eps=2e-5, momentum=bn_mom, name='bnd')
-      body = Act(data=body, act_type=act_type, name='relud')
+      # body = Act(data=body, act_type=act_type, name='relud')
 
     fc1 = symbol_utils.get_fc1(body, num_classes, fc_type)
     return fc1

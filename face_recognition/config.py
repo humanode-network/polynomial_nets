@@ -121,7 +121,7 @@ dataset.cmsw.val_targets = ['lfw', 'cfp_fp', 'agedb_30']
 
 dataset.retina = edict()
 dataset.retina.dataset = 'retina'
-dataset.retina.dataset_path = '/home/dengjiankang/datasets/ms1m-retinaface'
+dataset.retina.dataset_path = '/datasets/public1/upload/ms1m-retinaface-t1'
 dataset.retina.num_classes = 93431
 dataset.retina.image_shape = (112,112,3)
 dataset.retina.val_targets = ['lfw', 'cfp_fp', 'agedb_30']
@@ -194,7 +194,7 @@ default.end_epoch = 10000
 default.lr = 0.1
 default.wd = 0.0005
 default.mom = 0.9
-default.per_batch_size = 64
+default.per_batch_size = 128
 default.ckpt = 2
 # default.lr_steps = '300000,450000,600000'
 default.lr_steps = '150000,240000,330000'
