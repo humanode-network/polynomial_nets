@@ -557,7 +557,7 @@ def resnet(units, num_stages, filter_list, num_classes, bottle_neck):
       body = Conv(data=body, num_filter=filter_list[0], kernel=(3,3), stride=(1,1), pad=(1, 1),
                                 no_bias=True, name="conv0", workspace=workspace)
       body = mx.sym.BatchNorm(data=body, fix_gamma=False, eps=2e-5, momentum=bn_mom, name='bn0')
-      # body = Act(data=body, act_type=act_type, name='relu0')
+      body = Act(data=body, act_type=act_type, name='relu0')
 
     for i in range(num_stages):
       #if version_input==0:
@@ -576,7 +576,7 @@ def resnet(units, num_stages, filter_list, num_classes, bottle_neck):
       body = Conv(data=body, num_filter=512, kernel=(1,1), stride=(1,1), pad=(0,0),
                                 no_bias=True, name="convd", workspace=workspace)
       body = mx.sym.BatchNorm(data=body, fix_gamma=False, eps=2e-5, momentum=bn_mom, name='bnd')
-      # body = Act(data=body, act_type=act_type, name='relud')
+      body = Act(data=body, act_type=act_type, name='relud')
 
     fc1 = symbol_utils.get_fc1(body, num_classes, fc_type)
     return fc1
